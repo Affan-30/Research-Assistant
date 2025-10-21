@@ -17,30 +17,7 @@ It’s designed as a smart study partner that integrates AI models to make study
 ---
 
 ## 🏗️ Project Structure
-
-ResearchAssistant-AI-based-Study-Partner/
-│
-├── assistant-extension/ # Chrome extension (Frontend)
-│ ├── background.js
-│ ├── manifest.json
-│ ├── sidepanel.html
-│ ├── sidepanel.js
-│ └── sidepanel.css
-│
-└── research-assistant/ # Spring Boot backend
-├── pom.xml
-├── src/
-│ ├── main/
-│ │ ├── java/com/research/assistant/
-│ │ │ ├── ResearchAssistantApplication.java
-│ │ │ ├── ResearchController.java
-│ │ │ ├── ResearchService.java
-│ │ │ ├── ResearchRequest.java
-│ │ │ └── GeminiResponse.java
-│ │ └── resources/application.properties
-│ └── test/
-│ └── java/com/research/assistant/ResearchAssistantApplicationTests.java
-
+<img width="1197" height="825" alt="image" src="https://github.com/user-attachments/assets/33863981-9290-47a7-96f2-5232fbf76d45" />
 
 ---
 
