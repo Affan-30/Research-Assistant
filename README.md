@@ -1,84 +1,94 @@
-# 🤖 Research Assistant – AI-Based Study Partner
+# Research Assistant
 
-**Research Assistant** is an AI-powered Chrome Extension + Spring Boot backend project that helps users simplify research, summarize notes, and organize learning content efficiently.  
-It’s designed as a smart study partner that integrates AI models to make studying and content understanding faster, cleaner, and more interactive.
+### AI-Powered Study Partner
 
----
-
-## 🚀 Features
-
-- 🧠 **AI Summarization** – Summarize long articles or notes instantly.
-- 📝 **Notes Management** – Save, edit, and organize research notes.
-- 🔍 **Smart Side Panel UI** – Access your assistant directly from the browser.
-- ⚙️ **Spring Boot Backend Integration** – Handles AI requests and responses efficiently.
-- 💾 **Local Storage** – Stores your notes securely in Chrome’s local storage.
-- 🧩 **Modular Design** – Clean separation between frontend and backend.
+An AI-based **Chrome Extension + Spring Boot backend** built to simplify research, compress information, and keep learning distraction-free.
+Quietly powerful. Intentionally minimal.
 
 ---
 
-## 🏗️ Project Structure
-<img width="1197" height="825" alt="image" src="https://github.com/user-attachments/assets/33863981-9290-47a7-96f2-5232fbf76d45" />
+## What it does
+
+* Turns long text into **clear, concise summaries**
+* Lets you **store and manage notes** without leaving the browser
+* Runs a **clean side-panel UI** that stays out of your way
+* Uses a **Spring Boot backend** to handle AI requests efficiently
 
 ---
 
-## 🧰 Tech Stack
+## Core Features
 
-**Frontend (Extension)**
-- HTML5, CSS3, JavaScript (Vanilla)
-- Chrome Extension APIs
-- Local Storage API
+* **AI Summarization** – Reduce articles and notes to essentials
+* **Note Persistence** – Save and reuse insights anytime
+* **Side Panel Interface** – Always accessible, never intrusive
+* **Backend-Driven AI** – Scalable, modular API design
+* **Local Storage** – Notes stay on your system
+
+---
+
+## Tech Stack
+
+**Frontend (Chrome Extension)**
+
+* HTML, CSS, Vanilla JavaScript
+* Chrome Extension APIs
+* Browser Local Storage
 
 **Backend**
-- Spring Boot (Java)
-- REST API
-- Lombok, Jackson (JSON Parsing)
-- Maven Build System
+
+* Java + Spring Boot
+* RESTful APIs
+* Maven
+* Jackson, Lombok
 
 ---
 
-## ⚙️ Installation & Setup
+## Setup
 
-### 🔹 1. Clone the Repository
-```
+### 1. Clone the repo
+
+```bash
 git clone https://github.com/Affan-30/Research-Assistant.git
 ```
-2. Run the Spring Boot Backend
-```
+
+### 2. Start backend
+
+```bash
 cd research-assistant
 mvn spring-boot:run
 ```
-Backend will start at:
+
+Backend runs on:
+
 ```
 http://localhost:8080
 ```
-🔹 3. Load Chrome Extension
 
-Open Chrome → Extensions → Manage Extensions
+### 3. Load the extension
 
-Enable Developer Mode
+1. Open Chrome → `chrome://extensions`
+2. Enable **Developer Mode**
+3. Click **Load unpacked**
+4. Select `assistant-extension/`
 
-Click “Load unpacked”
+Done.
 
-Select the folder assistant-extension/
+---
 
-Now your Research Assistant side panel is active 🎉
+## How it works
 
-🧠 How It Works
+1. Select text in the side panel
+2. Trigger summarization
+3. AI processes content via backend
+4. Save distilled insights locally
+5. Reuse when needed
 
-Enter or paste research text into the notes section.
+Efficient loop. No distractions.
 
-Click Summarize to generate a concise version using the AI backend.
+---
 
-Save important insights for later using the Save Notes feature.
+## Developer
 
-Revisit your summaries anytime from the Chrome side panel.
-
-📸 Screenshots
-<img width="1920" height="822" alt="Screenshot (219)" src="https://github.com/user-attachments/assets/70287cfa-295b-4d96-a048-20a402c5c14b" />
-<img width="1920" height="816" alt="Screenshot (221)" src="https://github.com/user-attachments/assets/b080ceae-5055-489e-86fc-c370aa8cc082" />
-
-🧑‍💻 Developer
-
-👨‍💻 Affan Shaikh
-💡 Passionate about Java, AI integration, and modern web tools.
+**Affan Shaikh**
+Java • Backend • AI Integration
 
