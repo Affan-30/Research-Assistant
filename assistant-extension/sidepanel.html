@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <title>Document</title>
+  <meta charset="UTF-8">
+  <title>Research Assistant</title>
   <link rel="stylesheet" href="sidepanel.css">
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Honk:MORF@15&display=swap');
+</style>
 </head>
-
 <body>
-  <div class="container">
+  <div class="glass-container">
     <div class="header">
-      <h1>Research Assistant</h1>
+      <h1 class="honk-title">Research</h1>
+      <span class="subtitle">Assistant v2.0</span>
     </div>
 
-    <div class="actions">
-      <button id="SummarizeBtn">Summarize</button>
+    <div class="content-wrapper">
+      <div class="action-card">
+        <button id="summarizeBtn" class="glow-button">Summarize</button>
+        <div id="results">
+           <p class="placeholder-text">Your summary will appear here...</p>
+        </div>
+      </div>
+
+      <div class="notes-card">
+        <label for="notes">Insights & Notes</label>
+        <textarea id="notes" placeholder="Drop your thoughts..."></textarea>
+        <button id="saveNotesBtn" class="save-button">Save to Library</button>
+      </div>
     </div>
-
-    <div id="results"></div>
-
-    <div class="notes">
-      <h2>Research Notes</h2>
-      <textarea id="notes" placeholder="Take notes here"></textarea>
-      <button id="saveNotesBtn">Save Notes</button>
-    </div>
-
-    
-    <script src="sidepanel.js"></script>
   </div>
+  <script src="sidepanel.js"></script>
 </body>
-
 </html>

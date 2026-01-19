@@ -2,6 +2,7 @@ package com.research.assistant;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/research")
@@ -15,9 +16,8 @@ public class ResearchController {
     }
 
     @PostMapping("/process")
-    public ResponseEntity<String> processContent(@RequestBody ResearchRequest request){
-        String result = researchService.processContent(request);
-        return ResponseEntity.ok(result);
+    public String processContent(@RequestBody ResearchRequest request) {
+        // This will now trigger the Spring AI ChatClient internally
+        return researchService.processContent(request);
     }
-
 }

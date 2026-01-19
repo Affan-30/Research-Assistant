@@ -1,83 +1,98 @@
+
 package com.research.assistant;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.http.*;
+        import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class ResearchService {
 
-    @Value("${gemini.api.url}")
-    private String apiURL;
+    @Value("${openrouter.api.url}")
+    private String openRouterUrl;
 
-    @Value("${gemini.api.key}")
-    private String apiKey;
+    @Value("${openrouter.api.key}")
+    private String openRouterApiKey;
 
-    private final WebClient webClient;
+    private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    public ResearchService(WebClient.Builder webClientBuilder, ObjectMapper objectMapper) {
-        this.webClient = webClientBuilder.build();
+    public ResearchService(RestTemplate restTemplate,
+                           ObjectMapper objectMapper) {
+        this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
 
     public String processContent(ResearchRequest request) {
+
         String prompt = buildPrompt(request);
 
-        Map<String, Object> reqBody = Map.of("contents", new Object[]{
-                Map.of("parts", new Object[]{
-                        Map.of("text", prompt)
-                })
-        });
+        // ---- OpenRouter Request Body ----
+        Map<String, Object> body = Map.of(
+                "model", "mistralai/devstral-2512:free",
+                "messages", List.of(
+                        Map.of(
+                                "role", "user",
+                                "content", prompt
+                        )
+                )
+        );
 
-        String response = webClient.post()
-                .uri(apiURL + apiKey)
-                .bodyValue(reqBody)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        // ---- Headers ----
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(openRouterApiKey);
+        headers.set("HTTP-Referer", "http://localhost"); // required by OpenRouter
+        headers.set("X-Title", "Research Assistant");
 
-        return extractTextFromResponse(response);
+        HttpEntity<Map<String, Object>> entity =
+                new HttpEntity<>(body, headers);
+
+        try {
+            ResponseEntity<String> response =
+                    restTemplate.postForEntity(
+                            openRouterUrl,
+                            entity,
+                            String.class
+                    );
+
+            return extractText(response.getBody());
+
+        } catch (Exception e) {
+            return "Error calling OpenRouter: " + e.getMessage();
+        }
     }
 
-    private String extractTextFromResponse(String response) {
+    // ---- Extract assistant text safely ----
+    private String extractText(String response) {
         try {
-            GeminiResponse geminiResponse = objectMapper.readValue(response, GeminiResponse.class);
-
-            if (geminiResponse.getCandidates() != null && !geminiResponse.getCandidates().isEmpty()) {
-                GeminiResponse.Candidate firstCandidate = geminiResponse.getCandidates().get(0);
-
-                if (firstCandidate.getContent() != null &&
-                        firstCandidate.getContent().getParts() != null &&
-                        !firstCandidate.getContent().getParts().isEmpty()) {
-
-                    return firstCandidate.getContent().getParts().get(0).getText();
-                }
-            }
-            return "No content found in response!";
+            JsonNode root = objectMapper.readTree(response);
+            return root
+                    .path("choices")
+                    .get(0)
+                    .path("message")
+                    .path("content")
+                    .asText("No response generated");
         } catch (Exception e) {
-            return "Error parsing: " + e.getMessage();
+            return "Error parsing OpenRouter response";
         }
     }
 
     private String buildPrompt(ResearchRequest request) {
-        StringBuilder prompt = new StringBuilder();
-
-        switch (request.getOperation()) {
-            case "summarize":
-                prompt.append("Provide a clear and concise summary of the following text:\n\n");
-                break;
-            case "suggest":
-                prompt.append("Based on the following content, suggest related topics and further reading. Format with headings and bullet points:\n\n");
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown operation: " + request.getOperation());
-        }
-
-        prompt.append(request.getContent());
-        return prompt.toString();
+        return switch (request.getOperation()) {
+            case "summarize" ->
+                    "Provide a clear and concise summary of the following text in a few sentences:\n\n" + request.getContent();
+            case "suggest" ->
+                    "Based on the following content: suggest related topics and further reading. Format the response with clear headings and bullet points:\n\n" + request.getContent();
+            default ->
+                    throw new IllegalArgumentException("Invalid operation");
+        };
     }
 }
+
